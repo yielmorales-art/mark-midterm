@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MARK 3336 Midterm Reviewer</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #1a1208;
+        --parchment: #f5efe3;
+        --cream: #faf6ee;
+        --gold: #c8922a;
+        --rust: #a63d2f;
+        --sage: #4a6741;
+        --slate: #3d4f5c;
+        --soft: #e8dfc8;
+        --muted: #7a6e5f;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--cream);
+        color: var(--ink);
+        font-family: "Lora", Georgia, serif;
+        min-height: 100vh;
+      }
+
+      .topbar {
+        height: 4px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--gold) 0px,
+          var(--gold) 30px,
+          var(--ink) 30px,
+          var(--ink) 32px
+        );
+      }
+
+      header {
+        background: var(--ink);
+        color: var(--parchment);
+        padding: 2.5rem 2rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::before {
+        content: "❧";
+        position: absolute;
+        font-size: 18rem;
+        opacity: 0.04;
+        top: -3rem;
+        left: -2rem;
+        color: var(--gold);
+        pointer-events: none;
+      }
+
+      header h1 {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        line-height: 1.1;
+        margin-bottom: 0.4rem;
+      }
+
+      header p {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-top: 0.5rem;
+      }
+
+      /* Score banner */
+      .score-banner {
+        background: var(--soft);
+        border-bottom: 1px solid #d4c9b0;
+        padding: 0.7rem 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 2.5rem;
+        flex-wrap: wrap;
+      }
+
+      .score-banner .stat {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .score-banner .stat strong {
+        color: var(--ink);
+        font-size: 1rem;
+      }
+
+      nav {
+        display: flex;
+        gap: 0;
+        background: var(--soft);
+        border-bottom: 2px solid var(--ink);
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      nav::-webkit-scrollbar {
+        display: none;
+      }
+
+      nav button {
+        font-family: "DM Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0.85rem 1.4rem;
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        border-right: 1px solid #d4c9b0;
+        white-space: nowrap;
+        transition: all 0.2s;
+        position: relative;
+      }
+
+      nav button::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gold);
+        transform: scaleX(0);
+        transition: transform 0.2s;
+      }
+
+      nav button:hover {
+        color: var(--ink);
+        background: rgba(200, 146, 42, 0.08);
+      }
+      nav button.active {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      nav button.active::after {
+        transform: scaleX(1);
+      }
+
+      main {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+
+      /* Tab panels */
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+
+      /* Section headers */
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+        margin-bottom: 0.3rem;
+        color: var(--ink);
+      }
+
+      .section-sub {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Progress bar */
+      .progress-bar {
+        height: 4px;
+        background: var(--soft);
+        margin-bottom: 1.5rem;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--gold);
+        transition: width 0.4s ease;
+        width: 0%;
+      }
+
+      /* Chapter label */
+      .ch-divider {
+        font-family: "DM Mono", monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin: 2rem 0 0.8rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid var(--soft);
+      }
+
+      .ch-divider:first-child {
+        margin-top: 0;
+      }
+
+      /* Question cards */
+      .q-card {
+        background: white;
+        border: 1px solid #ddd5be;
+        border-radius: 2px;
+        padding: 1.4rem 1.5rem;
+        margin-bottom: 1.2rem;
+        box-shadow: 2px 2px 0 #e8dfc8;
+      }
+
+      .q-card.answered-ok {
+        border-color: var(--sage);
+        background: #eaf5e8;
+        box-shadow: 2px 2px 0 #c6e0c4;
+      }
+      .q-card.answered-bad {
+        border-color: var(--rust);
+        background: #fbeae8;
+        box-shadow: 2px 2px 0 #f0c9c4;
+      }
+
+      .q-num {
+        font-family: "DM Mono", monospace;
+        font-size: 0.68rem;
+        color: var(--gold);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+
+      .q-text {
+        font-size: 0.95rem;
+        line-height: 1.65;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .option-btn {
+        text-align: left;
+        background: var(--cream);
+        border: 1.5px solid #d4c9b0;
+        border-radius: 2px;
+        padding: 0.6rem 1rem;
+        font-family: "Lora", serif;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        color: var(--ink);
+      }
+
+      .option-btn:hover:not(:disabled) {
+        background: var(--soft);
+        border-color: var(--gold);
+      }
+      .option-btn.correct {
+        background: #eaf5e8;
+        border-color: var(--sage);
+        color: var(--sage);
+        font-weight: 600;
+      }
+      .option-btn.wrong {
+        background: #fbeae8;
+        border-color: var(--rust);
+        color: var(--rust);
+      }
+      .option-btn:disabled {
+        cursor: default;
+      }
+
+      .feedback {
+        margin-top: 0.7rem;
+        font-size: 0.85rem;
+        font-style: italic;
+        color: var(--muted);
+        display: none;
+        line-height: 1.55;
+      }
+      .feedback.show {
+        display: block;
+      }
+
+      /* Identification */
+      .id-row {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      .id-input {
+        flex: 1;
+        min-width: 160px;
+        padding: 0.55rem 0.9rem;
+        border: 1.5px solid #d4c9b0;
+        border-radius: 2px;
+        background: var(--cream);
+        font-family: "Lora", serif;
+        font-size: 0.88rem;
+        color: var(--ink);
+        outline: none;
+        transition: border-color 0.15s;
+      }
+      .id-input:focus {
+        border-color: var(--gold);
+      }
+      .id-input:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+
+      .btn {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.6rem 1.4rem;
+        border: 2px solid var(--ink);
+        background: var(--ink);
+        color: var(--parchment);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: var(--ink);
+      }
+      .btn:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+      .btn:disabled:hover {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--parchment);
+      }
+
+      .btn.outline {
+        background: transparent;
+        color: var(--ink);
+      }
+      .btn.outline:hover {
+        background: var(--ink);
+        color: var(--parchment);
+      }
+
+      /* Quiz controls */
+      .quiz-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .score-badge {
+        font-family: "DM Mono", monospace;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      /* Final result box */
+      .result-box {
+        background: var(--parchment);
+        border: 1px solid #d4c9b0;
+        padding: 1.5rem 2rem;
+        text-align: center;
+        margin-top: 2rem;
+        display: none;
+      }
+
+      .result-box.show {
+        display: block;
+      }
+
+      .result-box .big {
+        font-family: "Playfair Display", serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1;
+        margin-bottom: 0.4rem;
+      }
+
+      .result-box .breakdown {
+        font-family: "DM Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        margin-bottom: 0.6rem;
+      }
+
+      .result-box .msg {
+        font-size: 0.9rem;
+        font-style: italic;
+        color: var(--muted);
+        margin-bottom: 1.2rem;
+      }
+
+      @media (max-width: 600px) {
+        nav button {
+          padding: 0.7rem 1rem;
+          font-size: 0.65rem;
+        }
+        .score-banner {
+          gap: 1.2rem;
+          padding: 0.6rem 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar"></div>
+
+    <header>
+      <h1>MARK 3336<br /><em>Midterm Reviewer</em></h1>
+      <p>
+        Chapters 1–9 &nbsp;|&nbsp; Kierulf, MIB &nbsp;|&nbsp; Asian Institute of
+        Management
+      </p>
+    </header>
+
+    <div class="score-banner">
+      <div class="stat"><strong id="s-total">0</strong> / 50 Total</div>
+      <div class="stat"><strong id="s-mc">0</strong> / 25 MC</div>
+      <div class="stat"><strong id="s-id">0</strong> / 25 ID</div>
+      <div class="stat"><strong id="s-done">0</strong> / 50 Done</div>
+    </div>
+
+    <nav>
+      <button class="active" onclick="showTab('mc')">Multiple Choice</button>
+      <button onclick="showTab('id')">Identification</button>
+    </nav>
+
+    <main>
+      <!-- MULTIPLE CHOICE -->
+      <div class="tab-panel active" id="tab-mc">
+        <div class="section-title">Multiple Choice</div>
+        <div class="section-sub">25 items · Chapters 1 through 9</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="mc-prog"></div>
+        </div>
+        <div id="mc-wrap"></div>
+        <div class="quiz-controls">
+          <div class="score-badge">
+            MC Score: <span id="mc-score-txt">0 / 25</span>
+          </div>
+          <button class="btn outline" onclick="resetMC()">Reset MC</button>
+        </div>
+        <div class="result-box" id="mc-result">
+          <div class="big" id="mc-big"></div>
+          <div class="breakdown" id="mc-breakdown"></div>
+          <div class="msg" id="mc-msg"></div>
+          <button class="btn" onclick="showTab('id')">
+            Continue to Identification →
+          </button>
+        </div>
+      </div>
+
+      <!-- IDENTIFICATION -->
+      <div class="tab-panel" id="tab-id">
+        <div class="section-title">Identification</div>
+        <div class="section-sub">25 items · Chapters 1 through 9</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="id-prog"></div>
+        </div>
+        <div id="id-wrap"></div>
+        <div class="quiz-controls">
+          <div class="score-badge">
+            ID Score: <span id="id-score-txt">0 / 25</span>
+          </div>
+          <button class="btn outline" onclick="resetID()">Reset ID</button>
+        </div>
+        <div class="result-box" id="id-result">
+          <div class="big" id="id-big"></div>
+          <div class="breakdown" id="id-breakdown"></div>
+          <div class="msg" id="id-msg"></div>
+          <button class="btn" onclick="resetAll()">Retake Everything</button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const MC = [
+        {
+          ch: "Chapter 1 — Introduction to Marketing",
+          q: "Which of the following best defines marketing?",
+          o: [
+            "The process of selling products at the highest possible price",
+            "Creating, communicating, delivering, and exchanging offerings that have value for customers and society",
+            "Advertising a product on television and social media",
+            "Managing a company's financial resources to maximize profit",
+          ],
+          a: 1,
+          fb: "Marketing is about creating, communicating, delivering, and exchanging value — it goes far beyond advertising or selling.",
+        },
+        {
+          ch: "Chapter 1 — Introduction to Marketing",
+          q: "Which marketing concept focuses on making products widely available at low cost through production efficiency?",
+          o: [
+            "Marketing concept",
+            "Selling concept",
+            "Production concept",
+            "Societal marketing concept",
+          ],
+          a: 2,
+          fb: "The Production Concept prioritizes efficiency and wide availability over addressing specific customer needs.",
+        },
+        {
+          ch: "Chapter 2 — Marketing Strategy & Planning",
+          q: "A SWOT analysis examines which four factors?",
+          o: [
+            "Sales, Workforce, Operations, Technology",
+            "Strengths, Weaknesses, Opportunities, Threats",
+            "Strategy, Wants, Objectives, Tactics",
+            "Supply, Wholesale, Output, Trends",
+          ],
+          a: 1,
+          fb: "SWOT = Strengths, Weaknesses, Opportunities, Threats — a framework for assessing internal and external strategic factors.",
+        },
+        {
+          ch: "Chapter 2 — Marketing Strategy & Planning",
+          q: "The classic marketing mix is composed of which four elements?",
+          o: [
+            "People, Process, Physical evidence, Promotion",
+            "Product, Price, Place, Promotion",
+            "Planning, Production, Packaging, Positioning",
+            "Product, Profit, People, Promotion",
+          ],
+          a: 1,
+          fb: "The 4 Ps of the marketing mix are Product, Price, Place, and Promotion.",
+        },
+        {
+          ch: "Chapter 3 — Market Environment",
+          q: "Which of the following is an example of a macroenvironmental factor?",
+          o: [
+            "A company's internal culture",
+            "A supplier raising prices",
+            "Demographic trends across the population",
+            "A new competitor entering the local market",
+          ],
+          a: 2,
+          fb: "Demographic trends are part of the macroenvironment (PESTLE). Suppliers and competitors are microenvironmental.",
+        },
+        {
+          ch: "Chapter 3 — Market Environment",
+          q: "PESTLE analysis is used to examine which type of environment?",
+          o: [
+            "Internal company environment",
+            "Competitive or industry environment",
+            "Macroenvironment",
+            "Customer behavior environment",
+          ],
+          a: 2,
+          fb: "PESTLE — Political, Economic, Social, Technological, Legal, Environmental — analyzes the broad macroenvironment.",
+        },
+        {
+          ch: "Chapter 4 — Segmentation & Positioning",
+          q: "Dividing a market into groups based on age, income, or gender is called what type of segmentation?",
+          o: ["Psychographic", "Geographic", "Demographic", "Behavioral"],
+          a: 2,
+          fb: "Demographic segmentation divides markets by measurable characteristics like age, income, gender, and occupation.",
+        },
+        {
+          ch: "Chapter 4 — Segmentation & Positioning",
+          q: "Which targeting strategy involves crafting separate marketing mixes for multiple different segments?",
+          o: ["Undifferentiated", "Concentrated", "Differentiated", "Niche"],
+          a: 2,
+          fb: "Differentiated targeting means tailoring a different strategy for each segment a company serves.",
+        },
+        {
+          ch: "Chapter 5 — Understanding Consumer Behavior",
+          q: "Maslow's Hierarchy of Needs lists needs in which order from most basic to highest?",
+          o: [
+            "Social, Safety, Physiological, Esteem, Self-actualization",
+            "Physiological, Safety, Social, Esteem, Self-actualization",
+            "Esteem, Social, Safety, Physiological, Self-actualization",
+            "Self-actualization, Esteem, Social, Safety, Physiological",
+          ],
+          a: 1,
+          fb: "Maslow's hierarchy: Physiological → Safety → Social → Esteem → Self-actualization.",
+        },
+        {
+          ch: "Chapter 5 — Understanding Consumer Behavior",
+          q: "Which stage of the consumer decision process involves comparing competing products before purchasing?",
+          o: [
+            "Problem recognition",
+            "Information search",
+            "Evaluation of alternatives",
+            "Post-purchase behavior",
+          ],
+          a: 2,
+          fb: "Evaluation of Alternatives is where consumers compare options based on criteria before deciding.",
+        },
+        {
+          ch: "Chapter 6 — B2B Buying Behavior",
+          q: "Which best distinguishes B2B buying from B2C buying?",
+          o: [
+            "B2B purchases are more emotional and impulsive",
+            "B2B involves fewer people in the decision process",
+            "B2B buying is more rational, involves larger volumes, and has formal decision processes",
+            "B2B markets are always smaller than B2C markets",
+          ],
+          a: 2,
+          fb: "B2B buying is rational, involves large transactions, multiple stakeholders in a buying center, and formal procurement.",
+        },
+        {
+          ch: "Chapter 6 — B2B Buying Behavior",
+          q: "In a B2B buying center, who has the authority to approve the final purchase?",
+          o: ["Initiator", "Influencer", "Decider", "Gatekeeper"],
+          a: 2,
+          fb: "The Decider holds authority to approve the final purchase, even if they are not the end user.",
+        },
+        {
+          ch: "Chapter 7 — Marketing Research",
+          q: "Data collected firsthand specifically for the current research problem is called what?",
+          o: [
+            "Secondary data",
+            "Tertiary data",
+            "Archival data",
+            "Primary data",
+          ],
+          a: 3,
+          fb: "Primary data is original data collected directly for a specific research purpose.",
+        },
+        {
+          ch: "Chapter 7 — Marketing Research",
+          q: "In-depth interviews and observation studies to understand consumer motivations are examples of which research approach?",
+          o: ["Quantitative", "Experimental", "Qualitative", "Descriptive"],
+          a: 2,
+          fb: "Qualitative research focuses on understanding motivations and behaviors through interviews, focus groups, and observation.",
+        },
+        {
+          ch: "Chapter 8 — Product Planning",
+          q: "A group of related products marketed under the same brand that serve similar functions is called what?",
+          o: [
+            "Product mix",
+            "Product line",
+            "Brand extension",
+            "Product category",
+          ],
+          a: 1,
+          fb: "A product line is a group of closely related products under one brand, like all shampoo variants of a single brand.",
+        },
+        {
+          ch: "Chapter 8 — Product Planning",
+          q: "Warranties, after-sales service, and brand image are part of which level of a product?",
+          o: [
+            "Core product",
+            "Actual product",
+            "Augmented product",
+            "Generic product",
+          ],
+          a: 2,
+          fb: "The Augmented Product adds features beyond the physical item — warranties, delivery, installation, after-sales service.",
+        },
+        {
+          ch: "Chapter 9 — Innovation & New Product Development",
+          q: "Coke Zero being launched as a sugar-free Coca-Cola is best classified as which type of innovation?",
+          o: [
+            "Discontinuous innovation",
+            "Dynamically continuous innovation",
+            "Continuous innovation",
+            "Radical innovation",
+          ],
+          a: 2,
+          fb: "Coke Zero is a small incremental improvement on an existing product without altering consumer behavior — Continuous Innovation.",
+        },
+        {
+          ch: "Chapter 9 — Innovation & New Product Development",
+          q: "Which PLC stage has peak sales, intense competition, and a focus on brand differentiation?",
+          o: ["Introduction", "Growth", "Maturity", "Decline"],
+          a: 2,
+          fb: "Maturity = leveling sales, crowded market, intense price competition, requires differentiation strategies.",
+        },
+        {
+          ch: "Chapter 9 — Innovation & New Product Development",
+          q: "A company generates 100 ideas. Only 1 reaches the market. What does this NPD funnel illustrate?",
+          o: [
+            "Innovation is too expensive",
+            "The NPD process filters ideas at every stage to prevent wasting resources",
+            "Companies prefer copying competitors",
+            "Only discontinuous innovations can reach the market",
+          ],
+          a: 1,
+          fb: "The NPD funnel shows most ideas are filtered out at each stage — this structured process prevents wasting money.",
+        },
+        {
+          ch: "Chapter 9 — Innovation & New Product Development",
+          q: "Kodak invented the digital camera but withheld it to protect film sales. This is a failure of what?",
+          o: [
+            "Product pricing strategy",
+            "Empathizing with evolving consumer behavior",
+            "Advertising planning",
+            "Supply chain management",
+          ],
+          a: 1,
+          fb: "Kodak failed to empathize with evolving consumer behaviors and ignored the opportunity to lead the digital photography shift.",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "A product is in decline. The company rebrands, launches new variants, and partners with influencers. This is best described as what?",
+          o: [
+            "Entering the Growth stage naturally",
+            "Extending the product life cycle",
+            "Launching a new product line",
+            "Using differentiated targeting",
+          ],
+          a: 1,
+          fb: "Products in Decline can be revived — as seen with Crocs and Polaroid — through rebranding, innovation, or new partnerships.",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "A business segments its market by lifestyle, values, and personality traits. This is called what?",
+          o: ["Demographic", "Geographic", "Behavioral", "Psychographic"],
+          a: 3,
+          fb: "Psychographic segmentation divides markets by psychological characteristics like lifestyle, values, and attitudes.",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "Which best describes a societal marketing orientation?",
+          o: [
+            "Floods the market with cheap products",
+            "Uses aggressive sales tactics for quarterly revenue",
+            "Balances consumer satisfaction with long-term societal well-being",
+            "Focuses only on production efficiency",
+          ],
+          a: 2,
+          fb: "The Societal Marketing Concept holds that companies should satisfy customer needs while considering society's well-being.",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "What is the main purpose of marketing research in the NPD process?",
+          o: [
+            "Reduce ideas generated",
+            "Validate ideas and reduce failure risk by gathering customer data",
+            "Replace the screening stage",
+            "Determine the final price before launch",
+          ],
+          a: 1,
+          fb: "Marketing research — surveys, focus groups, concept testing — validates whether customers want and will pay for the product.",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "In B2B marketing, derived demand means demand for business products depends on what?",
+          o: [
+            "Number of competitors",
+            "Internal production capacity",
+            "Demand for the final consumer products those businesses produce",
+            "Government regulations",
+          ],
+          a: 2,
+          fb: "Derived demand in B2B means demand for industrial goods is driven by demand for the consumer products those businesses make.",
+        },
+      ];
+
+      const ID = [
+        {
+          ch: "Chapter 1 — Introduction to Marketing",
+          q: "This orientation believes consumers will buy products only if the company aggressively promotes and sells them, even if they would not otherwise seek them out.",
+          a: "selling concept",
+          d: "Selling Concept",
+        },
+        {
+          ch: "Chapter 1 — Introduction to Marketing",
+          q: "This term refers to the set of actual and potential buyers a company aims to reach with its product or service.",
+          a: "target market",
+          d: "Target Market",
+        },
+        {
+          ch: "Chapter 2 — Marketing Strategy & Planning",
+          q: "This framework evaluates a company's internal strengths and weaknesses alongside external opportunities and threats to inform strategic planning.",
+          a: "swot analysis",
+          d: "SWOT Analysis",
+        },
+        {
+          ch: "Chapter 2 — Marketing Strategy & Planning",
+          q: "This growth strategy involves introducing existing products into new markets the company has not previously served.",
+          a: "market development",
+          d: "Market Development",
+        },
+        {
+          ch: "Chapter 3 — Market Environment",
+          q: "This acronym stands for six macroenvironmental forces: Political, Economic, Social, Technological, Legal, and Environmental.",
+          a: "pestle",
+          d: "PESTLE",
+        },
+        {
+          ch: "Chapter 3 — Market Environment",
+          q: "These are the companies or individuals that supply the resources needed to produce goods and services, and their actions directly affect a business's ability to operate.",
+          a: "suppliers",
+          d: "Suppliers",
+        },
+        {
+          ch: "Chapter 4 — Segmentation & Positioning",
+          q: "This type of segmentation divides buyers by their knowledge of, attitude toward, use of, or response to a product.",
+          a: "behavioral segmentation",
+          d: "Behavioral Segmentation",
+        },
+        {
+          ch: "Chapter 4 — Segmentation & Positioning",
+          q: "This refers to how a brand or product is perceived relative to competitors in the minds of target consumers.",
+          a: "positioning",
+          d: "Positioning",
+        },
+        {
+          ch: "Chapter 5 — Understanding Consumer Behavior",
+          q: "According to Maslow, this is the highest level of human need — the desire to fulfill one's full potential and find personal meaning.",
+          a: "self-actualization",
+          d: "Self-Actualization",
+        },
+        {
+          ch: "Chapter 5 — Understanding Consumer Behavior",
+          q: "This stage of the consumer decision process occurs after purchase, when the buyer reflects on whether the product met their expectations.",
+          a: "post-purchase behavior",
+          d: "Post-Purchase Behavior",
+        },
+        {
+          ch: "Chapter 6 — B2B Buying Behavior",
+          q: "In a B2B buying center, this role controls the flow of information to other members — for example, an assistant who screens vendor calls.",
+          a: "gatekeeper",
+          d: "Gatekeeper",
+        },
+        {
+          ch: "Chapter 6 — B2B Buying Behavior",
+          q: "This B2B buying situation involves purchasing a product the company has bought before, with no changes to specs or suppliers.",
+          a: "straight rebuy",
+          d: "Straight Rebuy",
+        },
+        {
+          ch: "Chapter 7 — Marketing Research",
+          q: "This research method gathers data through structured questionnaires administered to large numbers of respondents to measure variables numerically.",
+          a: "quantitative research",
+          d: "Quantitative Research",
+        },
+        {
+          ch: "Chapter 7 — Marketing Research",
+          q: "This type of data was collected by someone else for a different purpose and is being reused — such as census data or published industry reports.",
+          a: "secondary data",
+          d: "Secondary Data",
+        },
+        {
+          ch: "Chapter 8 — Product Planning",
+          q: "This refers to the total number of product lines a company offers.",
+          a: "product mix",
+          d: "Product Mix",
+        },
+        {
+          ch: "Chapter 8 — Product Planning",
+          q: "This is the core benefit or fundamental reason why a consumer buys a product — for example, buying a drill because you need holes, not the drill itself.",
+          a: "core product",
+          d: "Core Product",
+        },
+        {
+          ch: "Chapter 9 — Innovation & New Product Development",
+          q: "This type of innovation introduces a completely new product requiring consumers to adopt entirely new behaviors — as smartphones did by replacing cameras, maps, and music players.",
+          a: "discontinuous innovation",
+          d: "Discontinuous Innovation",
+        },
+        {
+          ch: "Chapter 9 — Innovation & New Product Development",
+          q: "This is the final step in the NPD process — the official launch with full-scale production, marketing campaigns, and distribution.",
+          a: "commercialization",
+          d: "Commercialization",
+        },
+        {
+          ch: "Chapter 9 — Innovation & New Product Development",
+          q: "This concept describes the journey every product takes from launch, to growth, to peak sales, to eventual decline.",
+          a: "product life cycle",
+          d: "Product Life Cycle",
+        },
+        {
+          ch: "Chapter 9 — Innovation & New Product Development",
+          q: "Crocs revived from near-decline through celebrity collaborations and social media trends. This is an example of a brand doing what to its life cycle?",
+          a: "extending the product life cycle",
+          d: "Extending the Product Life Cycle",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "This strategy involves targeting a very small, specialized segment with a highly tailored offering — ideal for businesses that cannot compete in broad markets.",
+          a: "niche marketing",
+          d: "Niche Marketing",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "This term refers to perceived benefit minus perceived cost in the customer's mind, and is the central goal marketing aims to create and deliver.",
+          a: "customer value",
+          d: "Customer Value",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "This marketing research tool gathers qualitative data by assembling a small group of people to discuss a product or concept guided by a moderator.",
+          a: "focus group",
+          d: "Focus Group",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "This is Step 1 of the NPD process, where companies gather ideas from customers, employees, competitors, market trends, and technology.",
+          a: "idea generation",
+          d: "Idea Generation",
+        },
+        {
+          ch: "Cross-Chapter Application",
+          q: "This B2B phenomenon describes how demand for industrial materials rises and falls based on changes in demand for the final consumer goods they are used to make.",
+          a: "derived demand",
+          d: "Derived Demand",
+        },
+      ];
+
+      // State
+      let mS = 0,
+        iS = 0,
+        mD = 0,
+        iD = 0;
+
+      function upd() {
+        document.getElementById("s-total").textContent = mS + iS;
+        document.getElementById("s-mc").textContent = mS;
+        document.getElementById("s-id").textContent = iS;
+        document.getElementById("s-done").textContent = mD + iD;
+        document.getElementById("mc-score-txt").textContent = `${mS} / 25`;
+        document.getElementById("id-score-txt").textContent = `${iS} / 25`;
+        document.getElementById("mc-prog").style.width = (mD / 25) * 100 + "%";
+        document.getElementById("id-prog").style.width = (iD / 25) * 100 + "%";
+      }
+
+      function showTab(t) {
+        document
+          .querySelectorAll(".tab-panel")
+          .forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll("nav button")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById("tab-" + t).classList.add("active");
+        document.querySelectorAll("nav button").forEach((b) => {
+          if (
+            b.textContent
+              .toLowerCase()
+              .includes(t === "mc" ? "multiple" : "identif")
+          )
+            b.classList.add("active");
+        });
+      }
+
+      function buildMC() {
+        const w = document.getElementById("mc-wrap");
+        w.innerHTML = "";
+        document.getElementById("mc-result").classList.remove("show");
+        let lc = "";
+        MC.forEach((q, i) => {
+          if (q.ch !== lc) {
+            const d = document.createElement("div");
+            d.className = "ch-divider";
+            d.textContent = q.ch;
+            w.appendChild(d);
+            lc = q.ch;
+          }
+          const c = document.createElement("div");
+          c.className = "q-card";
+          c.id = `mc${i}`;
+          c.innerHTML = `<div class="q-num">Question ${i + 1} of 25</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options" id="mco${i}">
+      ${q.o.map((o, j) => `<button class="option-btn" onclick="aMC(${i},${j})">${"ABCD"[j]}. ${o}</button>`).join("")}
+    </div>
+    <div class="feedback" id="mcf${i}"></div>`;
+          w.appendChild(c);
+        });
+      }
+
+      function aMC(qi, s) {
+        const q = MC[qi],
+          c = document.getElementById(`mc${qi}`),
+          fb = document.getElementById(`mcf${qi}`);
+        document.querySelectorAll(`#mco${qi} .option-btn`).forEach((b, j) => {
+          b.disabled = true;
+          if (j === q.a) b.classList.add("correct");
+          if (j === s && s !== q.a) b.classList.add("wrong");
+        });
+        fb.classList.add("show");
+        if (s === q.a) {
+          mS++;
+          c.classList.add("answered-ok");
+          fb.textContent = "✓ Correct. " + q.fb;
+        } else {
+          c.classList.add("answered-bad");
+          fb.textContent = "✗ Incorrect. " + q.fb;
+        }
+        mD++;
+        upd();
+        if (mD === 25) showMCResult();
+      }
+
+      function showMCResult() {
+        const pct = Math.round((mS / 25) * 100);
+        document.getElementById("mc-big").textContent = `${mS} / 25`;
+        document.getElementById("mc-breakdown").textContent =
+          `${pct}% · Multiple Choice`;
+        document.getElementById("mc-msg").textContent =
+          pct >= 90
+            ? "Outstanding. On to identification!"
+            : pct >= 75
+              ? "Good work. Review your misses, then continue."
+              : pct >= 60
+                ? "Passing — but a closer review is recommended."
+                : "Needs review. Re-read the relevant lecture notes.";
+        document.getElementById("mc-result").classList.add("show");
+      }
+
+      function resetMC() {
+        mS = 0;
+        mD = 0;
+        buildMC();
+        upd();
+      }
+
+      function buildID() {
+        const w = document.getElementById("id-wrap");
+        w.innerHTML = "";
+        document.getElementById("id-result").classList.remove("show");
+        let lc = "";
+        ID.forEach((q, i) => {
+          if (q.ch !== lc) {
+            const d = document.createElement("div");
+            d.className = "ch-divider";
+            d.textContent = q.ch;
+            w.appendChild(d);
+            lc = q.ch;
+          }
+          const c = document.createElement("div");
+          c.className = "q-card";
+          c.id = `id${i}`;
+          c.innerHTML = `<div class="q-num">Question ${26 + i} of 50</div>
+    <div class="q-text">${q.q}</div>
+    <div class="id-row">
+      <input class="id-input" id="idi${i}" type="text" placeholder="Type your answer…" autocomplete="off"/>
+      <button class="btn" id="idb${i}" onclick="aID(${i})">Check</button>
+    </div>
+    <div class="feedback" id="idf${i}"></div>`;
+          w.appendChild(c);
+          setTimeout(() => {
+            const inp = document.getElementById(`idi${i}`);
+            if (inp)
+              inp.onkeydown = (e) => {
+                if (e.key === "Enter") aID(i);
+              };
+          }, 0);
+        });
+      }
+
+      function aID(i) {
+        const q = ID[i];
+        const inp = document.getElementById(`idi${i}`),
+          btn = document.getElementById(`idb${i}`),
+          fb = document.getElementById(`idf${i}`),
+          c = document.getElementById(`id${i}`);
+        const raw = inp.value
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, "");
+        if (!raw) return;
+        inp.disabled = true;
+        btn.disabled = true;
+        fb.classList.add("show");
+        iD++;
+        const cor = q.a.replace(/[^a-z0-9\s]/g, "");
+        const cw = cor.split(" ").filter((w) => w.length > 3);
+        const ok =
+          raw === cor ||
+          cw.filter((w) => raw.includes(w)).length >=
+            Math.ceil(cw.length * 0.6);
+        if (ok) {
+          iS++;
+          c.classList.add("answered-ok");
+          fb.textContent = `✓ Correct. The answer is: ${q.d}`;
+        } else {
+          c.classList.add("answered-bad");
+          fb.textContent = `✗ Incorrect. The correct answer is: ${q.d}`;
+        }
+        upd();
+        if (iD === 25) showIDResult();
+      }
+
+      function showIDResult() {
+        const pct = Math.round((iS / 25) * 100);
+        const tot = mS + iS;
+        document.getElementById("id-big").textContent = `${tot} / 50`;
+        document.getElementById("id-breakdown").textContent =
+          `MC ${mS}/25 · ID ${iS}/25 · Overall ${Math.round((tot / 50) * 100)}%`;
+        document.getElementById("id-msg").textContent =
+          tot / 50 >= 0.9
+            ? "Outstanding — you are fully prepared for the midterm."
+            : tot / 50 >= 0.75
+              ? "Good work. Review the items you missed before exam day."
+              : tot / 50 >= 0.6
+                ? "Passing, but targeted review of weak chapters is recommended."
+                : "Significant review needed. Re-read your lecture notes for all chapters.";
+        document.getElementById("id-result").classList.add("show");
+      }
+
+      function resetID() {
+        iS = 0;
+        iD = 0;
+        buildID();
+        upd();
+      }
+
+      function resetAll() {
+        mS = 0;
+        iS = 0;
+        mD = 0;
+        iD = 0;
+        buildMC();
+        buildID();
+        upd();
+        showTab("mc");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      buildMC();
+      buildID();
+      upd();
+    </script>
+  </body>
+</html>
